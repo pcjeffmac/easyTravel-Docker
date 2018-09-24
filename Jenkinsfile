@@ -11,7 +11,8 @@ node {
     stage('docker-compose') {
     	dir ('deploy-easytravel') {
     		sh '''cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace@script
-				cp -R * ../workspace/deploy-easytravel/. '''
+				cp -R * ../workspace/deploy-easytravel/. 
+				cp .env ../workspace/deploy-easytravel/.'''
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: false])
     	}
     }
