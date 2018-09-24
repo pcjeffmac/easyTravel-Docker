@@ -4,7 +4,7 @@ node {
     }
  
   	stage('cleanup') {
- 		//deleteDir()
+ 		deleteDir()
  		//checkout scm
  	}
    
