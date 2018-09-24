@@ -4,12 +4,14 @@ node {
     }
  
   	stage('cleanup') {
- 		deleteDir()
+ 		//deleteDir()
  		//checkout scm
  	}
    
     stage('docker-compose') {
     	dir ('deploy-easytravel') {
+    		sh '''cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace@script
+				cp -R * ../workspace/deploy-easytravel/. '''
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: false])
     	}
     }
