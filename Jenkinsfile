@@ -21,4 +21,13 @@ node {
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
     }
+    
+    stage('networking') {
+    	dir ('iptables') {
+    	sh '''iptables -t nat -A POSTROUTING --source 172.17.0.6 --destination 172.17.0.6 -p tcp --dport 80 -j MASQUERADE
+		iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to 172.17.0.6:80
+		iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination 172.17.0.6 -p tcp --dport 80 -j ACCEPT'''
+    	}
+    }
+    
 }    
