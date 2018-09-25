@@ -2,11 +2,7 @@ node {
     environment {
         ET_APM_SERVER_DEFAULT = "APM"
     }
-    
-    stage('checkout') {
-    git credentialsId: 'a47386bc-8488-41c0-a806-07b1123560e3', url: 'https://github.com/pcjeffmac/easyTravel-Docker.git', branch: 'master'
-    }
-        
+          
     stage('docker-down') {
     	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel'
     	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
