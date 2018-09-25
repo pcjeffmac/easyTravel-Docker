@@ -4,7 +4,7 @@ node {
     }
           
     stage('docker-down') {
-    	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel'
+    	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
     } 
  
@@ -15,9 +15,7 @@ node {
    
     stage('docker-compose-up') {
     	dir ('deploy-easytravel') {
-    		sh '''cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel
-				cp -R * ../workspace/deploy-easytravel/. 
-				cp .env ../workspace/deploy-easytravel/.'''
+    		sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
     }
