@@ -18,6 +18,29 @@ node {
     		sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
+        	//Dynatrace POST action for deployment Event      	
+        	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
+  					"attachRules": {
+    				"tagRule" : {
+        			"meTypes" : "HOST",
+        				"tags" : "easyTravelDocker"
+    					}
+  					},
+  					"deploymentName":"${JOB_NAME} - ${BUILD_NUMBER} Staging (http)",
+  					"deploymentVersion":"1.1",
+  					"deploymentProject":"easyTravelDocker",
+  					"remediationAction":"https://192.168.2.85/#/templates/job_template/7",
+  					"ciBackLink":"${BUILD_URL}",
+  					"source":"Jenkins",
+  					"customProperties":{
+    					"Jenkins Build Number": "${BUILD_ID}",
+    					"Environment": "Production",
+    					"Job URL": "${JOB_URL}",
+    					"Build URL": "${BUILD_URL}"
+  						}
+					}"""
+        	
+			httpRequest acceptType: 'APPLICATION_JSON', authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', contentType: 'APPLICATION_JSON', customHeaders: [[maskValue: true, name: 'Authorization', value: 'Api-Token 7tEzakG8S2-02dv5w8SU2']], httpMode: 'POST', ignoreSslErrors: true, requestBody: body, responseHandle: 'NONE', url: 'https://buh931.dynatrace-managed.com/e/89c9109a-79f9-43c7-8f78-37372eca07e1/api/v1/events/'        		
     }
     
     stage('networking-rules') {
