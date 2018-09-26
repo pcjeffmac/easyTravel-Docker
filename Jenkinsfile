@@ -49,4 +49,11 @@ node {
 		sh 'sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination 172.17.0.6 -p tcp --dport 80 -j ACCEPT'
     }
     
+   stage('Run NeoLoad - scenario1') {
+        dir ('NeoLoad') {
+        //NeoLoad Test
+        neoloadRun executable: '/opt/Neoload6.6/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://192.168.3.3:8080/ -nlwebToken UYWWcrEsfg5o37ASFBdeXh9Y', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+        }
+    }     
+    
 }    
