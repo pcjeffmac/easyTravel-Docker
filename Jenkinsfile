@@ -2,6 +2,13 @@ node {
     environment {
         ET_APM_SERVER_DEFAULT = "APM"
     }
+
+    stage('Checkout-cli') {
+        // into a dynatrace-cli subdirectory we checkout the CLI
+        dir ('dynatrace-cli') {
+            git url: 'https://github.com/Dynatrace/dynatrace-cli.git', credentialsId: 'cd41a86f-ea57-4477-9b10-7f9277e650e1', branch: 'master'
+        }
+    }
           
     stage('docker-down') {
     	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
