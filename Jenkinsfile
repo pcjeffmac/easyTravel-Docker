@@ -51,9 +51,10 @@ node {
     }
     
     stage('networking-rules') {
-    	sh 'sudo iptables -t nat -A POSTROUTING --source 172.17.0.6 --destination 172.17.0.6 -p tcp --dport 80 -j MASQUERADE'
-		sh 'sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to 172.17.0.6:80'
-		sh 'sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination 172.17.0.6 -p tcp --dport 80 -j ACCEPT'
+    	sh 'sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' www'
+    	sh 'sudo iptables -t nat -A POSTROUTING --source 172.17.0.5 --destination 172.17.0.5 -p tcp --dport 80 -j MASQUERADE'
+		sh 'sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to 172.17.0.5:80'
+		sh 'sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination 172.17.0.5 -p tcp --dport 80 -j ACCEPT'
     }
     
    stage('Run NeoLoad - scenario1') {
