@@ -54,7 +54,7 @@ node {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
     	sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'
     	def dockerwwwip = ${DWWW}
-    	sh 'sudo iptables -t nat -A POSTROUTING --source ${dockerwwwip} --destination ${dockerwwwip} -p tcp --dport 80 -j MASQUERADE'
+    	sh 'sudo iptables -t nat -A POSTROUTING --source '+ ${dockerwwwip} +' --destination '+ ${dockerwwwip} +' -p tcp --dport 80 -j MASQUERADE'
 		sh 'sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to ${dockerwwwip}'
 		sh 'sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${dockerwwwip} -p tcp --dport 80 -j ACCEPT'
     }
