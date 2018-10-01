@@ -60,13 +60,13 @@ node {
 		).trim()	
 		echo "This is the ip set: ${DWWW}"
 		environment {
-			DWWW = ${DWWW}
+			DWWW = "${DWWW}"
+			}
 
     		sh 'sudo iptables -t nat -A POSTROUTING --source ${env.DWWW} --destination ${env.DWWW} -p tcp --dport 80 -j MASQUERADE'
 			sh 'sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to ${DWWW}'
 			sh 'sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT'
 
-		}
 
     }
     
