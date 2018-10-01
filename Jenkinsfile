@@ -53,7 +53,13 @@ node {
     stage('networking-rules') {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
     	sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'
-		env.DWWW = sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'
+		
+		DWWW = sh (
+			script: 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www',
+			returnStdout: true
+		).trim()	
+		echo "This is the ip set: ${DWWW}"
+		
     		sh 'sudo iptables -t nat -A POSTROUTING --source ${DWWW} --destination ${DWWW} -p tcp --dport 80 -j MASQUERADE'
 			sh 'sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to ${DWWW}'
 			sh 'sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT'
