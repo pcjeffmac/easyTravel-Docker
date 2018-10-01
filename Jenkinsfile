@@ -3,6 +3,10 @@ node {
         ET_APM_SERVER_DEFAULT = "APM"
     }
 
+	stage('Flush iptables') {
+		sh '/home/dynatrace/resetiptables.sh'
+	}
+
     stage('Checkout-cli') {
         // into a dynatrace-cli subdirectory we checkout the CLI
         dir ('dynatrace-cli') {
