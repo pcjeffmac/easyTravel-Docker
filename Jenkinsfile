@@ -3,6 +3,10 @@ node {
         ET_APM_SERVER_DEFAULT = "APM"
     }
 
+ 	stage('cleanup') {
+ 		deleteDir()
+ 	}
+
 	stage('Flush iptables') {
 		sh '/home/dynatrace/resetiptables.sh'
 	}
