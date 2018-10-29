@@ -22,7 +22,7 @@ node {
           
     stage('docker-down') {
     	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
-    	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
+    	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
     } 
  
   	stage('cleanup') {
@@ -33,7 +33,7 @@ node {
     stage('docker-compose-up') {
     	dir ('deploy-easytravel') {
     		sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
-    		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/deploy-easytravel/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
+    		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
