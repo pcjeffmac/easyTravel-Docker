@@ -46,7 +46,7 @@ node {
   					"deploymentName":"${JOB_NAME} - ${BUILD_NUMBER} Staging (http)",
   					"deploymentVersion":"1.1",
   					"deploymentProject":"easyTravelDocker",
-  					"remediationAction":"https://192.168.2.85/#/templates/job_template/7",
+  					"remediationAction":"https://ansible.pcjeffint.com/#/templates/job_template/7",
   					"ciBackLink":"${BUILD_URL}",
   					"source":"Jenkins",
   					"customProperties":{
@@ -80,7 +80,7 @@ node {
    stage('Run NeoLoad - scenario1') {
         dir ('NeoLoad') {
         //NeoLoad Test
-        neoloadRun executable: '/opt/Neoload6.6/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://192.168.3.3:8080/ -nlwebToken qBmjKe13OshxpIm4npUQLNOE', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+        neoloadRun executable: '/opt/Neoload6.6/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken qBmjKe13OshxpIm4npUQLNOE', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
         }
     }     
     
