@@ -18,6 +18,7 @@ backend:
     ET_APM_SERVER_DEFAULT: "APM"
     CATALINA_OPTS: "-Dconfig.apmServerDefault=APM -Xmx300m"
     ET_DATABASE_LOCATION: "easytravel-mongodb:27017"
+    DT_TAGS: "Environment=Production Service=easyTravel-Service"
 
 frontend:
   hostname: easytravel-frontend
