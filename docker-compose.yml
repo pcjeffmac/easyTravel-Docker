@@ -5,7 +5,10 @@ mongodb:
   ports:
   - 27017
   - 28017
-
+  environment:
+    ET_APM_SERVER_DEFAULT: "APM"
+    DT_TAGS: "Environment=Production Service=easyTravel-Service"
+    
 backend:
   hostname: easytravel-backend
   container_name: backend
@@ -33,6 +36,7 @@ frontend:
     ET_APM_SERVER_DEFAULT: "APM"
     CATALINA_OPTS: "-Dconfig.apmServerDefault=APM -Xmx525m"
     ET_BACKEND_URL: "http://easytravel-backend:8080"
+    DT_TAGS: "Environment=Production Service=easyTravel-Service"
 
 www:
   hostname: easytravel-www
@@ -46,6 +50,7 @@ www:
   environment:
     ET_FRONTEND_LOCATION: "easytravel-frontend:8080"
     ET_BACKEND_LOCATION: "easytravel-backend:8080"
+    DT_TAGS: "Environment=Production Service=easyTravel-Service"
 
 loadgen:
   container_name: loadgen
