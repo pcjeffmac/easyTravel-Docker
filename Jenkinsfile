@@ -75,13 +75,32 @@ node {
 			sh "sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT"
 
 
-    }
+    }  
     
    stage('Run NeoLoad - scenario1') {
         dir ('NeoLoad') {
         //NeoLoad Test
         neoloadRun executable: '/opt/Neoload6.6/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken qBmjKe13OshxpIm4npUQLNOE', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
         }
-    }     
+    }
+    
+    stage('ValidateProduction') {
+        dir ('dynatrace-scripts') {
+            DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
+            echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
+        }
+   
+        // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
+        dir ('dynatrace-cli') {
+            sh 'python3 dtcli.py dqlr srv tags/CONTEXTLESS:DockerService=easyTravelDocker '+
+               'service.responsetime[avg%hour],service.responsetime[p90%hour] ${DT_URL} ${DT_TOKEN}'
+            sh 'mv dqlreport.html dqlproductionreport.html'
+            archiveArtifacts artifacts: 'dqlproductionreport.html', fingerprint: true
+
+            sh 'python3 dtcli.py link srv tags/CONTEXTLESS:DockerService=easyTravelDocker ' +
+            	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
+            archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
+        }
+    }           
     
 }    
