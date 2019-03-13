@@ -102,7 +102,7 @@ node {
    stage('Run NeoLoad - scenario1') {
         dir ('NeoLoad') {
         //NeoLoad Test
-        neoloadRun executable: '/opt/Neoload6.7/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken LQbc0Z2Rd1ObANsF9eUrlEaP -noGUI', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+        //neoloadRun executable: '/opt/Neoload6.7/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken LQbc0Z2Rd1ObANsF9eUrlEaP -noGUI', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
         }
     }
     
@@ -112,7 +112,7 @@ node {
             echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
         }
 
-        perfSigDynatraceReports envId: 'DTSaaS', metrics: [[metricId: 'com.dynatrace.builtin:service.responsetime']], nonFunctionalFailure: 2, specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json'
+        perfSigDynatraceReports envId: 'DTSaaS', metrics: [[metricId: 'com.dynatrace.builtin:service.responsetime']], nonFunctionalFailure: 2, specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec'
    
         // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
         dir ('dynatrace-cli') {
