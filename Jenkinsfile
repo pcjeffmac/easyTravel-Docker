@@ -114,7 +114,8 @@ node {
 
         perfSigDynatraceReports(
          envId: 'DTSaaS', 
-         nonFunctionalFailure: 1, 
+         metrics: [[metricId: 'com.dynatrace.builtin:service.responsetime'], [metricId: 'com.dynatrace.builtin:service.failurerate']],
+         nonFunctionalFailure: 2, 
          specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json'
    		)
         // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
