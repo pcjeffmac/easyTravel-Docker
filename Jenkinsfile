@@ -151,8 +151,13 @@ node {
 			sh "sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT"
     }  
 
-recordDynatraceSession(
-        envId: 'Dynatrace Demo Environment',
+
+    
+   stage('Run NeoLoad - scenario1') {
+        dir ('NeoLoad') {
+        //NeoLoad Test
+        recordDynatraceSession(
+        envId: 'DTSaaS',
         testCase: 'loadtest',
         tagMatchRules: [
             [
@@ -162,13 +167,9 @@ recordDynatraceSession(
                 ]
             ]
         ]) {
-    // some block
-}
-    
-   stage('Run NeoLoad - scenario1') {
-        dir ('NeoLoad') {
-        //NeoLoad Test
-        //neoloadRun executable: '/opt/Neoload6.7/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken LQbc0Z2Rd1ObANsF9eUrlEaP -noGUI', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+    // Test scenerio 
+    //neoloadRun executable: '/opt/Neoload6.7/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken LQbc0Z2Rd1ObANsF9eUrlEaP -noGUI', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+	}      
         }
     }
     
