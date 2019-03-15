@@ -1,34 +1,34 @@
 {
-    "_lowerLimit" : 10.0,
-    "_upperLimit" : 1000.0,
+    "_lowerLimit" : 1800000.0,
+    "_upperLimit" : 1500000.0,
     "timeseries" : [
         {
             "timeseriesId" : "com.dynatrace.builtin:service.responsetime",
-            "aggregation" : "avg",
+            "aggregation" : "percentile",
             "tags" : "easyTravelDocker:www",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 100.0
+            "lowerLimit" : 1500000.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
-            "aggregation" : "avg",
+            "aggregation" : "count",
             "tags" : "easyTravelDocker:www",
             "upperLimit" : 5.0,
-            "lowerLimit" : 1.0
+            "lowerLimit" : 2.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.responsetime",
-            "aggregation" : "avg",
+            "aggregation" : "percentile",
             "tags" : "JourneyService",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 100.0
+            "lowerLimit" : 1500000.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
-            "aggregation" : "avg",
+            "aggregation" : "count",
             "tags" : "JourneyService",
             "upperLimit" : 5.0,
-            "lowerLimit" : 1.0
+            "lowerLimit" : 2.0
         }
     ]
 }
