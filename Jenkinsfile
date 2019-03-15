@@ -163,7 +163,7 @@ node {
             	[
                 	meTypes: [[meType: 'PROCESS_GROUP']],
                 	tags: [
-                    	    [context: 'CONTEXTLESS', key: '', value: 'easyTravelDocker:www']
+                    	    [context: 'CONTEXTLESS', key: '', value: 'nginx']
                 	]
             	]
         	]) {
