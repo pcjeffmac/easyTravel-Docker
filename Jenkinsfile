@@ -92,7 +92,7 @@ node {
   					"attachRules": {
     				"tagRule" : {
         			"meTypes" : "SERVICE",
-        				"tags" : "easyTravelDocker:www"
+        				"tags" : "JourneyService"
     					}
   					},
   					"deploymentName":"${JOB_NAME} - ${BUILD_NUMBER} Staging (http)",
