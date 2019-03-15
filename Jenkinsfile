@@ -85,6 +85,32 @@ node {
         	
 			httpRequest acceptType: 'APPLICATION_JSON', authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', contentType: 'APPLICATION_JSON', customHeaders: [[maskValue: true, name: 'Authorization', value: 'Api-Token CGVha39QTheyn1UFufsvC']], httpMode: 'POST', ignoreSslErrors: true, requestBody: body, responseHandle: 'NONE', url: 'https://ibg73613.live.dynatrace.com/api/v1/events/'        		
     }    
+
+    stage('Event-ServicePost') {
+        	//Dynatrace POST action for deployment Event      	
+        	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
+  					"attachRules": {
+    				"tagRule" : {
+        			"meTypes" : "SERVICE",
+        				"tags" : "easyTravelDocker:www"
+    					}
+  					},
+  					"deploymentName":"${JOB_NAME} - ${BUILD_NUMBER} Staging (http)",
+  					"deploymentVersion":"1.1",
+  					"deploymentProject":"easyTravelDocker",
+  					"remediationAction":"https://ansible.pcjeffint.com/#/templates/job_template/7",
+  					"ciBackLink":"${BUILD_URL}",
+  					"source":"Jenkins",
+  					"customProperties":{
+    					"Jenkins Build Number": "${BUILD_ID}",
+    					"Environment": "Production",
+    					"Job URL": "${JOB_URL}",
+    					"Build URL": "${BUILD_URL}"
+  						}
+					}"""
+        	
+			httpRequest acceptType: 'APPLICATION_JSON', authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', contentType: 'APPLICATION_JSON', customHeaders: [[maskValue: true, name: 'Authorization', value: 'Api-Token CGVha39QTheyn1UFufsvC']], httpMode: 'POST', ignoreSslErrors: true, requestBody: body, responseHandle: 'NONE', url: 'https://ibg73613.live.dynatrace.com/api/v1/events/'        		
+    } 
     
     stage('networking-rules') {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
