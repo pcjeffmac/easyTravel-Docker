@@ -157,16 +157,16 @@ node {
         dir ('NeoLoad') {
         //NeoLoad Test
         recordDynatraceSession(
-        envId: 'DTSaaS',
-        testCase: 'loadtest',
-        tagMatchRules: [
-            [
-                meTypes: [[meType: 'SERVICE']],
-                tags: [
-                        [context: 'CONTEXTLESS', key: '', value: 'etNginx']
-                ]
-            ]
-        ]) {
+        	envId: 'DTSaaS',
+        	testCase: 'loadtest',
+        	tagMatchRules: [
+            	[
+                	meTypes: [[meType: 'PROCESS_GROUP']],
+                	tags: [
+                    	    [context: 'CONTEXTLESS', key: '', value: 'easyTravelDocker:www']
+                	]
+            	]
+        	]) {
     // Test scenerio 
     //neoloadRun executable: '/opt/Neoload6.7/bin/NeoLoadCmd', project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})', testDescription: 'From Jenkins', commandLineOption: '-nlweb -nlwebAPIURL http://neoload.pcjeffint.com:8080/ -nlwebToken LQbc0Z2Rd1ObANsF9eUrlEaP -noGUI', scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 	}      
