@@ -1,5 +1,5 @@
 {
-    "_lowerLimit" : 0.0,
+    "_lowerLimit" : 10.0,
     "_upperLimit" : 1000.0,
     "timeseries" : [
         {
@@ -7,7 +7,7 @@
             "aggregation" : "avg",
             "tags" : "easyTravelDocker:www",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 10.0
+            "lowerLimit" : 100.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
@@ -21,7 +21,7 @@
             "aggregation" : "avg",
             "tags" : "JourneyService",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 10.0
+            "lowerLimit" : 100.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
