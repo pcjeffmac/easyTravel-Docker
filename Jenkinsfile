@@ -161,9 +161,9 @@ node {
         	testCase: 'loadtest',
         	tagMatchRules: [
             	[
-                	meTypes: [[meType: 'PROCESS_GROUP']],
+                	meTypes: [[meType: 'SERVICE']],
                 	tags: [
-                    	    [context: 'CONTEXTLESS', key: '', value: 'nginx']
+                    	    [context: 'CONTEXTLESS', key: 'easyTravelDocker', value: 'www']
                 	]
             	]
         	]) {

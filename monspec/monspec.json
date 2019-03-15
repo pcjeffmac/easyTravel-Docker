@@ -5,14 +5,14 @@
         {
             "timeseriesId" : "com.dynatrace.builtin:service.responsetime",
             "aggregation" : "avg",
-            "tags" : "etNginx",
+            "tags" : "easyTravelDocker:www",
             "upperLimit" : 800.0,
             "lowerLimit" : 600.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
             "aggregation" : "avg",
-            "tags" : "etNginx",
+            "tags" : "easyTravelDocker:www",
             "upperLimit" : 5.0,
             "lowerLimit" : 0.0
         },
