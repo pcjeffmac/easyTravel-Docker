@@ -7,28 +7,28 @@
             "aggregation" : "avg",
             "tags" : "easyTravelDocker:www",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 100.0
+            "lowerLimit" : 10.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
             "aggregation" : "avg",
             "tags" : "easyTravelDocker:www",
             "upperLimit" : 5.0,
-            "lowerLimit" : 0.0
+            "lowerLimit" : 1.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.responsetime",
             "aggregation" : "avg",
             "tags" : "JourneyService",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 100.0
+            "lowerLimit" : 10.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
             "aggregation" : "avg",
             "tags" : "JourneyService",
             "upperLimit" : 5.0,
-            "lowerLimit" : 0.0
+            "lowerLimit" : 1.0
         }
     ]
 }
