@@ -7,7 +7,7 @@
             "aggregation" : "avg",
             "tags" : "easyTravelDocker:www",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 1600000.0
+            "lowerLimit" : 500.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
@@ -21,7 +21,7 @@
             "aggregation" : "avg",
             "tags" : "JourneyService",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 1600000.0
+            "lowerLimit" : 500.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
