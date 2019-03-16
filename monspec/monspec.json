@@ -6,8 +6,8 @@
             "timeseriesId" : "com.dynatrace.builtin:service.responsetime",
             "aggregation" : "percentile",
             "tags" : "easyTravelDocker:www",
-            "upperLimit" : 1800000.0,
-            "lowerLimit" : 1500000.0
+            "upperLimit" : 2500000.0,
+            "lowerLimit" : 2000000.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
