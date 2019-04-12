@@ -21,7 +21,7 @@
             "aggregation" : "percentile",
             "tags" : "JourneyService",
             "upperLimit" : 1800000.0,
-            "lowerLimit" : 1500000.0
+            "lowerLimit" : 150.0
         },
         {
             "timeseriesId" : "com.dynatrace.builtin:service.failurerate",
