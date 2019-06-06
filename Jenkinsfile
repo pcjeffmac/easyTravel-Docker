@@ -99,12 +99,12 @@ node {
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 		contentType: 'APPLICATION_JSON', 
 		customHeaders: [[maskValue: true, name: 'Authorization', 
-		value: 'Api-Token CGVha39QTheyn1UFufsvC']], 
+		value: "Api-Token ${DT_API_TOKEN}"]], 
 		httpMode: 'POST', 
 		ignoreSslErrors: true, 
 		requestBody: body, 
 		responseHandle: 'NONE', 
-		url: 'https://ibg73613.live.dynatrace.com/api/v1/events/'        		
+		url: "${DT_TENANT_URL}/api/v1/events/"         		
     } 
     
     stage('Event-Post-Service-Nginx') {
