@@ -173,7 +173,7 @@ node {
     // Test scenario 
     neoloadRun executable: "${NL_CMD_PATH}", 
     project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', 
-    testName: "scenerio1 $Date{hh:mm - dd MMM yyyy} (build ${BUILD_NUMBER})", 
+    testName: 'scenerio1 $Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
     testDescription: 'From Jenkins', 
     commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
     scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
