@@ -159,7 +159,7 @@ node {
         dir ('NeoLoad') {
         //NeoLoad Test
         //PerfSig record test
-recordDynatraceSession(envId: 'DTSaaS', tagMatchRules: [[meTypes: [[meType: 'SERVICE']], tags: [[context: 'CONTEXTLESS', key: 'easyTravelDocker', value: 'www']]]], testCase: 'loadtest'){
+recordDynatraceSession(envId: 'DTSaaS', tagMatchRules: [[meTypes: [[meType: 'SERVICE']], tags: 'etNginx']], testCase: 'loadtest'){
     // Test scenario 
     neoloadRun executable: "${NL_CMD_PATH}", 
     project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', 
