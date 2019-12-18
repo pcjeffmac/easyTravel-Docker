@@ -159,7 +159,20 @@ node {
         dir ('NeoLoad') {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         //PerfSig record test
-    		recordDynatraceCustomSession (envId: 'DTSaaS', tagMatchRules: [[meTypes: [[meType: 'SERVICE']], tags: [[context: 'CONTEXTLESS', key: '', value: 'etNginx']]]], testCase: 'loadtest', timeframeStart: 1576340106853, timeframeStop: 0){
+    		recordDynatraceCustomSession(
+    			envId: 'DTSaaS',
+    			testCase: 'loadtest',
+    			tagMatchRules: [
+    				[
+    					meTypes: [[meType: 'SERVICE']], 
+    					tags: [
+    							[context: 'CONTEXTLESS', key: '', value: 'etNginx']
+    						   ]
+    				]
+    		   ],
+    		   timeframeStart: 1576340106853, 
+    		   timeframeStop: 0)
+    		{
     	// Test scenario
     	//NeoLoad Test 
     		neoloadRun executable: "${NL_CMD_PATH}", 
