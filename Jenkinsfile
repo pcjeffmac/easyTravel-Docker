@@ -159,18 +159,7 @@ node {
         dir ('NeoLoad') {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         //PerfSig record test
-    		recordDynatraceSession(
-    			envId: 'DTSaaS',
-    			testCase: 'loadtest',
-    			tagMatchRules: [
-    				[
-    					meTypes: [[meType: 'SERVICE']], 
-    					tags: [
-    							[context: 'CONTEXTLESS', key: '', value: 'etNginx']
-    						   ]
-    				]
-    		   ]
-    		   )
+    		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     		{
     	// Test scenario
     	//NeoLoad Test 
