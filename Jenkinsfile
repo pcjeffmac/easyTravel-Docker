@@ -188,9 +188,7 @@ node {
   		            "annotationDescription": "New Code Deployment",
   					"customProperties":{
     					"Jenkins Build Number": "${BUILD_ID}",
-    					"Environment": "Production",
-    					"Job URL": "${JOB_URL}",
-    					"Build URL": "${BUILD_URL}"
+    					"Environment": "Production"
   						},
   						"start": ${TEST_START},
   						"end": ${TEST_END} 
