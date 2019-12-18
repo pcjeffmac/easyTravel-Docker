@@ -159,7 +159,7 @@ node {
         dir ('NeoLoad') {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         //PerfSig record test
-    		recordDynatraceCustomSession(
+    		recordDynatraceSession(
     			envId: 'DTSaaS',
     			testCase: 'loadtest',
     			tagMatchRules: [
@@ -169,9 +169,8 @@ node {
     							[context: 'CONTEXTLESS', key: '', value: 'etNginx']
     						   ]
     				]
-    		   ],
-    		   timeframeStart: 1576340106853, 
-    		   timeframeStop: 0)
+    		   ]
+    		   )
     		{
     	// Test scenario
     	//NeoLoad Test 
