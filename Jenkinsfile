@@ -182,7 +182,42 @@ node {
     		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
         }
+        TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
     }
+    
+   stage('Annotation-Post-Service-Nginx') {
+        	//Dynatrace POST action for deployment Event      	
+        	def body = """{"eventType": "CUSTOM_ANNOTATION",
+  					"attachRules": {
+    				"tagRule" : {
+        			"meTypes" : "SERVICE",
+        				"tags" : "etNginx"
+    					}
+  					},
+  					"source":"Jenkins",
+  					"annotationType": "ETEasytravel",
+  		            "annotationDescription": "New Code Deployment",
+  					"customProperties":{
+    					"Jenkins Build Number": "${BUILD_ID}",
+    					"Environment": "Production",
+    					"Job URL": "${JOB_URL}",
+    					"Build URL": "${BUILD_URL}"
+  						},
+  						"start": ${TEST_START},
+  						"end": ${TEST_END} 
+					}"""
+        //send json payload	
+		httpRequest acceptType: 'APPLICATION_JSON', 
+		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
+		contentType: 'APPLICATION_JSON', 
+		customHeaders: [[maskValue: true, name: 'Authorization', 
+		value: "Api-Token ${DT_API_TOKEN}"]], 
+		httpMode: 'POST', 
+		ignoreSslErrors: true, 
+		requestBody: body, 
+		responseHandle: 'NONE', 
+		url: "${DT_TENANT_URL}/api/v1/events/"        		
+    }      
     
     stage('ValidateProduction') {
         dir ('dynatrace-scripts') {
