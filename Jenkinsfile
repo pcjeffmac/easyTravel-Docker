@@ -174,7 +174,7 @@ node {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
     }
     
-   stage('Annotation-Post-Service-Nginx') {
+   stage('Annotation-Post') {
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_ANNOTATION",
   					"attachRules": {
