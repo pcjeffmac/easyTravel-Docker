@@ -184,8 +184,8 @@ node {
     					}
   					},
   					"source":"Jenkins",
-  					"annotationType": "ETEasytravel",
-  		            "annotationDescription": "New Code Deployment",
+  					"annotationType": "LoadTest",
+  		            "annotationDescription": "NeoLoad Run",
   					"customProperties":{
     					"Jenkins Build Number": "${BUILD_ID}",
     					"Environment": "Production"
