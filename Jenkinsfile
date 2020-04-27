@@ -36,6 +36,12 @@ node {
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
    }
+
+	stage('Event-Slack') {
+	
+	slackSend color: "#439FE0", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+
+	} 
     
     stage('Event-Post-Host') {
         	//Dynatrace POST action for deployment Event      	
@@ -142,13 +148,7 @@ node {
 		url: "${DT_TENANT_URL}/api/v1/events/"        		
     }    
 
-	stage('Event-Slack') {
-	
-	slackSend color: "#439FE0", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-
-   
-	}    
-    
+  
     stage('networking-rules') {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
     	sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'	
@@ -235,6 +235,14 @@ node {
             	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
         }
-    }           
+    }     
+    
+    stage('Event-Slack-End') {
+	
+	slackSend color: "#439FE0", message: "Build Finished: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+
+   
+	} 
+          
     
 }    
