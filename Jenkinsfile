@@ -3,6 +3,7 @@ node {
         ET_APM_SERVER_DEFAULT = "APM"
     }
 
+	//send notification to slack
 	stage('Event-Start-Slack') {
 	 	slackSend color: "#439FE0", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
 	} 
