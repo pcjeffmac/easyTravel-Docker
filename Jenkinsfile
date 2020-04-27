@@ -143,7 +143,7 @@ node {
     }    
 
 	stage('Event-Post-Service-Nginx') {
-		slackSend channel: '# build', message: 'Build: ${BUILD_NUMBER} Completed ', tokenCredentialId: 'slack-token'    
+		slackSend channel: '# build', message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "#439FE0", tokenCredentialId: 'slack-token'    
 	}    
     
     stage('networking-rules') {
