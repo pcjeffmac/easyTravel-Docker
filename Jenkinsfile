@@ -143,7 +143,15 @@ node {
     }    
 
 	stage('Event-Slack') {
-		slackSend channel: '# build', message: "Build Started", color: "#439FE0", tokenCredentialId: 'slack-token'    
+
+    withCredentials([string(credentialsId: 'slack-token', variable: 'slackCredentials')]) {
+    slackSend teamDomain: 'domain',
+        channel: 'build', 
+        token: slackCredentials, 
+        color: 'danger',
+        message: 'Not so good message from Jenkins Pipeline'
+    }
+   
 	}    
     
     stage('networking-rules') {
