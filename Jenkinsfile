@@ -142,7 +142,7 @@ node {
 		url: "${DT_TENANT_URL}/api/v1/events/"        		
     }    
 
-	stage('Event-Post-Service-Nginx') {
+	stage('Event-Slack') {
 		slackSend channel: '# build', message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "#439FE0", tokenCredentialId: 'slack-token'    
 	}    
     
