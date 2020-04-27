@@ -13,10 +13,10 @@ node {
 
     stage('Checkout-cli') {
         // Checkout our application source code
-            git url: 'https://github.com/pcjeffmac/easyTravel-Docker.git', credentialsId: '${GIT_TOKEN}', branch: 'master'
+            git url: 'https://github.com/pcjeffmac/easyTravel-Docker.git', credentialsId: "${GIT_TOKEN}", branch: 'master'
         // into a dynatrace-cli subdirectory we checkout the CLI
         dir ('dynatrace-cli') {
-            git url: 'https://github.com/Dynatrace/dynatrace-cli.git', credentialsId: '${GIT_CLI_TOKEN}', branch: 'master'
+            git url: 'https://github.com/Dynatrace/dynatrace-cli.git', credentialsId: "${GIT_CLI_TOKEN}", branch: 'master'
         }
     }
           
