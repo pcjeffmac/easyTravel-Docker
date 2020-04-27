@@ -141,6 +141,10 @@ node {
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"        		
     }    
+
+	stage('Event-Post-Service-Nginx') {
+		slackSend channel: '# build', message: 'Build: ${BUILD_NUMBER} Completed ', tokenCredentialId: 'slack-token'    
+	}    
     
     stage('networking-rules') {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
