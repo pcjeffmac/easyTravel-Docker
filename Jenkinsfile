@@ -3,6 +3,10 @@ node {
         ET_APM_SERVER_DEFAULT = "APM"
     }
 
+	stage('Event-Start-Slack') {
+	 	slackSend color: "#439FE0", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+	} 
+
  	stage('cleanup') {
  		deleteDir()
  	}
@@ -20,7 +24,7 @@ node {
         }
     }
           
-    stage('docker-down') {
+   stage('docker-down') {
     	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
     } 
@@ -30,20 +34,14 @@ node {
  		//checkout scm
  	}
    
-    stage('docker-compose-up') {
+   stage('docker-compose-up') {
     	dir ('deploy-easytravel') {
     		sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
    }
-
-	stage('Event-Slack') {
-	
-	slackSend color: "#439FE0", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-
-	} 
     
-    stage('Event-Post-Host') {
+   stage('Event-Post-Host') {
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -238,10 +236,7 @@ node {
     }     
     
     stage('Event-Slack-End') {
-	
-	slackSend color: "#439FE0", message: "Build Finished: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-
-   
+		slackSend color: "#439FE0", message: "Build Finished: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
 	} 
           
     
