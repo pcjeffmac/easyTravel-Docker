@@ -143,7 +143,7 @@ node {
     }    
 
 	stage('Event-Slack') {
-		slackSend channel: '# build', message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}", color: "#439FE0", tokenCredentialId: 'slack-token'    
+		slackSend channel: '# build', message: "Build Started", color: "#439FE0", tokenCredentialId: 'slack-token'    
 	}    
     
     stage('networking-rules') {
