@@ -45,9 +45,7 @@ stages {
    }
     
    stage('Event-Post-Host') {
-   
    		steps {
-   
         	//Dynatrace POST action for deployment Event  
         	script {     	
         	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
@@ -73,27 +71,27 @@ stages {
 				}	
 		echo "${jsonPayload}"			
 
-            step(
-        //send json payload	
-		httpRequest (acceptType: 'APPLICATION_JSON', 
-		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
-		contentType: 'APPLICATION_JSON', 
-		customHeaders: [[maskValue: true, name: 'Authorization', 
-		value: "Api-Token ${DT_API_TOKEN}"]], 
-		httpMode: 'POST', 
-		ignoreSslErrors: true, 
-		requestBody: jsonPayload, 
-		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/")        		
+        step(
+        	//send json payload	
+			httpRequest (acceptType: 'APPLICATION_JSON', 
+			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
+			contentType: 'APPLICATION_JSON', 
+			customHeaders: [[maskValue: true, name: 'Authorization', 
+			value: "Api-Token ${DT_API_TOKEN}"]], 
+			httpMode: 'POST', 
+			ignoreSslErrors: true, 
+			requestBody: jsonPayload, 
+			responseHandle: 'NONE', 
+			url: "${DT_TENANT_URL}/api/v1/events/")        		
 		)
 		}
     }    
 
     stage('Event-Post-Service-JourneyService') {
         steps {
-            step(
+            script {
         	//Dynatrace POST action for deployment Event      	
-        	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
+        	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
         			"meTypes" : "SERVICE",
@@ -113,8 +111,8 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
-				)
-			step(		
+				}
+		step(		
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -123,7 +121,7 @@ stages {
 		value: "Api-Token ${DT_API_TOKEN}"]], 
 		httpMode: 'POST', 
 		ignoreSslErrors: true, 
-		requestBody: body, 
+		requestBody: jsonPayload, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/" 
 		)
@@ -133,9 +131,9 @@ stages {
     
     stage('Event-Post-Service-Nginx') {
         steps {
-            step(
+            script {
         	//Dynatrace POST action for deployment Event      	
-        	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
+        	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
         			"meTypes" : "SERVICE",
@@ -155,8 +153,8 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
-			)
-			step(		
+			}
+		step(		
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -165,7 +163,7 @@ stages {
 		value: "Api-Token ${DT_API_TOKEN}"]], 
 		httpMode: 'POST', 
 		ignoreSslErrors: true, 
-		requestBody: body, 
+		requestBody: jsonPayload, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"  
 		)
@@ -218,9 +216,9 @@ stages {
     
    stage('Annotation-Post') {
        steps {
-       		step(
+       		script {
         	//Dynatrace POST action for deployment Event      	
-        	def body = """{"eventType": "CUSTOM_ANNOTATION",
+        	jsonPayload = """{"eventType": "CUSTOM_ANNOTATION",
   					"attachRules": {
     				"tagRule" : {
         			"meTypes" : "SERVICE",
@@ -237,8 +235,8 @@ stages {
   						"start": ${TEST_START},
   						"end": ${TEST_END} 
 					}"""
-        	)
-        	step(
+        	}
+        step(
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -247,7 +245,7 @@ stages {
 		value: "Api-Token ${DT_API_TOKEN}"]], 
 		httpMode: 'POST', 
 		ignoreSslErrors: true, 
-		requestBody: body, 
+		requestBody: jsonPayload, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"  
 		)
