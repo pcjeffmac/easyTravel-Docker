@@ -5,40 +5,53 @@ pipeline {
 
 stages {
  	stage('cleanup') {
+ 	    steps {
  		deleteDir()
+		}
  	}
 
 	stage('Flush iptables') {
+	    steps {
 		sh '/home/dynatrace/resetiptables.sh'
+		}
 	}
 
     stage('Checkout-cli') {
+        steps {
         // Checkout our application source code
             git url: 'https://github.com/pcjeffmac/easyTravel-Docker.git', credentialsId: "${GIT_TOKEN}", branch: 'master'
         // into a dynatrace-cli subdirectory we checkout the CLI
         dir ('dynatrace-cli') {
             git url: 'https://github.com/Dynatrace/dynatrace-cli.git', credentialsId: "${GIT_CLI_TOKEN}", branch: 'master'
         }
+        }
     }
           
    stage('docker-down') {
+        steps {
     	sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
+    	}
     } 
  
   	stage('cleanup') {
+  	    steps {
  		//deleteDir()
  		//checkout scm
+ 		}
  	}
    
    stage('docker-compose-up') {
+        steps {
     	dir ('deploy-easytravel') {
     		sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
     		step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: true])
     	}
+    	}
    }
     
    stage('Event-Post-Host') {
+        steps {
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -71,9 +84,11 @@ stages {
 		requestBody: body, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"        		
+		}
     }    
 
     stage('Event-Post-Service-JourneyService') {
+        steps {
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -105,10 +120,12 @@ stages {
 		ignoreSslErrors: true, 
 		requestBody: body, 
 		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/"         		
+		url: "${DT_TENANT_URL}/api/v1/events/" 
+		}        		
     } 
     
     stage('Event-Post-Service-Nginx') {
+        steps {
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -140,11 +157,13 @@ stages {
 		ignoreSslErrors: true, 
 		requestBody: body, 
 		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/"        		
+		url: "${DT_TENANT_URL}/api/v1/events/"  
+		}      		
     }    
 
   
     stage('networking-rules') {
+        steps {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
     	sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'	
 		DWWW = sh (
@@ -155,9 +174,11 @@ stages {
     		sh "sudo iptables -t nat -A POSTROUTING --source ${DWWW} --destination ${DWWW} -p tcp --dport 80 -j MASQUERADE"
 			sh "sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to ${DWWW}"
 			sh "sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT"
+		}	
     }  
   
    stage('Run NeoLoad - scenario1') {
+       steps {
         dir ('NeoLoad') {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         //PerfSig record test
@@ -174,9 +195,11 @@ stages {
 			}      
         }
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        }
     }
     
    stage('Annotation-Post') {
+       steps {
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_ANNOTATION",
   					"attachRules": {
@@ -205,10 +228,12 @@ stages {
 		ignoreSslErrors: true, 
 		requestBody: body, 
 		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/"        		
+		url: "${DT_TENANT_URL}/api/v1/events/"  
+		}      		
     }      
     
     stage('ValidateProduction') {
+       steps {
         dir ('dynatrace-scripts') {
             DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
             echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
@@ -229,6 +254,7 @@ stages {
             sh 'python3 dtcli.py link srv tags/CONTEXTLESS:easyTravelDocker=www ' +
             	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
+        }
         }
     }     
 }
