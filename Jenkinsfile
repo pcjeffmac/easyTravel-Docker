@@ -199,12 +199,12 @@ echo "${TEST_START}"
     		//{
     	      // Test scenario
     	      //NeoLoad Test 
-    		  neoloadRun executable: "${NL_CMD_PATH}", 
-    		  project: "${NL_PROJECT}", 
-    		  testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
-    		  testDescription: 'From Jenkins', 
-    		  commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
-    		  scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+    		  //neoloadRun executable: "${NL_CMD_PATH}", 
+    		  //project: "${NL_PROJECT}", 
+    		  //testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
+    		  //testDescription: 'From Jenkins', 
+    		  //commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
+    		  //scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			//}      
            }
          )
