@@ -71,7 +71,7 @@ stages {
   						}
 					}"""
 				}	
-		echo "${jsonPayload}			
+		echo "${jsonPayload}"			
 
             step(
         //send json payload	
