@@ -255,10 +255,11 @@ stages {
     
     stage('ValidateProduction') {
        steps {
-        step (
+        script {
         dir ('dynatrace-scripts') {
             DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
             echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
+        }
         }
 
 		//Produce PerSig reports
@@ -278,7 +279,7 @@ stages {
             	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
         }
-        )
+        
         }
     }     
 }
