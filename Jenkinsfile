@@ -197,9 +197,11 @@ stages {
     		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
         }
-        TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        script {
+        	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
         )
+        }
     }
     
    stage('Annotation-Post') {
