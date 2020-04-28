@@ -69,9 +69,7 @@ stages {
   						}
 					}"""
 				}	
-		echo "${jsonPayload}"			
-
-        
+		    //echo "${jsonPayload}"			
         	//send json payload	
 			httpRequest (acceptType: 'APPLICATION_JSON', 
 			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -83,8 +81,7 @@ stages {
 			requestBody: jsonPayload, 
 			responseHandle: 'NONE', 
 			url: "${DT_TENANT_URL}/api/v1/events/",
-			validResponseCodes: '200')        		
-		
+			validResponseCodes: '200')        			
 		}
     }    
 
@@ -112,21 +109,19 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
-				}
-		
-        //send json payload	
-		httpRequest (acceptType: 'APPLICATION_JSON', 
-		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
-		contentType: 'APPLICATION_JSON', 
-		customHeaders: [[maskValue: true, name: 'Authorization', 
-		value: "Api-Token ${DT_API_TOKEN}"]], 
-		httpMode: 'POST', 
-		ignoreSslErrors: true, 
-		requestBody: jsonPayload, 
-		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/",
-		validResponseCodes: '200')
-		
+				}		
+        	//send json payload	
+			httpRequest (acceptType: 'APPLICATION_JSON', 
+			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
+			contentType: 'APPLICATION_JSON', 
+			customHeaders: [[maskValue: true, name: 'Authorization', 
+			value: "Api-Token ${DT_API_TOKEN}"]], 
+			httpMode: 'POST', 
+			ignoreSslErrors: true, 
+			requestBody: jsonPayload, 
+			responseHandle: 'NONE', 
+			url: "${DT_TENANT_URL}/api/v1/events/",
+			validResponseCodes: '200')		
 		}        		
     } 
     
@@ -155,42 +150,32 @@ stages {
   						}
 					}"""
 			}
-		
-        //send json payload	
-		httpRequest (acceptType: 'APPLICATION_JSON', 
-		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
-		contentType: 'APPLICATION_JSON', 
-		customHeaders: [[maskValue: true, name: 'Authorization', 
-		value: "Api-Token ${DT_API_TOKEN}"]], 
-		httpMode: 'POST', 
-		ignoreSslErrors: true, 
-		requestBody: jsonPayload, 
-		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/",
-		validResponseCodes: '200')
-
+        	//send json payload	
+			httpRequest (acceptType: 'APPLICATION_JSON', 
+			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
+			contentType: 'APPLICATION_JSON', 
+			customHeaders: [[maskValue: true, name: 'Authorization', 
+			value: "Api-Token ${DT_API_TOKEN}"]], 
+			httpMode: 'POST', 
+			ignoreSslErrors: true, 
+			requestBody: jsonPayload, 
+			responseHandle: 'NONE', 
+			url: "${DT_TENANT_URL}/api/v1/events/",
+			validResponseCodes: '200')
 		}      		
     }    
 
-  
     stage('networking-rules') {
         steps {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
     	sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'	
-
 		script {
-		DWWW = sh (
-			script: 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www',
-			returnStdout: true
-		).trim()
+			DWWW = sh (script: 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www', returnStdout: true).trim()
 		}	
-		
 		echo "This is the ip set: ${DWWW}"		
     		sh "sudo iptables -t nat -A POSTROUTING --source ${DWWW} --destination ${DWWW} -p tcp --dport 80 -j MASQUERADE"
 			sh "sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to ${DWWW}"
 			sh "sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT"
-
-		
 		}
     }  
   
@@ -212,11 +197,9 @@ stages {
     		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
         }
-        )
-        step(
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        )
         }
+        )
     }
     
    stage('Annotation-Post') {
@@ -241,19 +224,18 @@ stages {
   						"end": ${TEST_END} 
 					}"""
         	}
-
-        //send json payload	
-		httpRequest (acceptType: 'APPLICATION_JSON', 
-		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
-		contentType: 'APPLICATION_JSON', 
-		customHeaders: [[maskValue: true, name: 'Authorization', 
-		value: "Api-Token ${DT_API_TOKEN}"]], 
-		httpMode: 'POST', 
-		ignoreSslErrors: true, 
-		requestBody: jsonPayload, 
-		responseHandle: 'NONE', 
-		url: "${DT_TENANT_URL}/api/v1/events/",
-		validResponseCodes: '200')
+        	//send json payload	
+			httpRequest (acceptType: 'APPLICATION_JSON', 
+			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
+			contentType: 'APPLICATION_JSON', 
+			customHeaders: [[maskValue: true, name: 'Authorization', 
+			value: "Api-Token ${DT_API_TOKEN}"]], 
+			httpMode: 'POST', 
+			ignoreSslErrors: true, 
+			requestBody: jsonPayload, 
+			responseHandle: 'NONE', 
+			url: "${DT_TENANT_URL}/api/v1/events/",
+			validResponseCodes: '200')
 		}      		
     }      
     
