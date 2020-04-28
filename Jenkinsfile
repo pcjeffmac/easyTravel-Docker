@@ -45,7 +45,11 @@ stages {
    }
     
    stage('Event-Post-Host') {
-        	//Dynatrace POST action for deployment Event      	
+   
+   		steps {
+   
+        	//Dynatrace POST action for deployment Event  
+        	script{     	
         	def jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
@@ -66,8 +70,9 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
+				}	
 		println jsonPayload			
-        steps {
+
             step(
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
