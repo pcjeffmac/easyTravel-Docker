@@ -191,7 +191,7 @@ stages {
 
 echo "${TEST_START}"
 
-         //step(
+         step(
            dir ('NeoLoad') {
         
            //PerfSig record test
@@ -207,7 +207,7 @@ echo "${TEST_START}"
     		  scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
            }
-          //)
+         )
 
         script {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
