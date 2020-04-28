@@ -189,7 +189,7 @@ stages {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
 
-         //step(
+         step(
             dir ('NeoLoad') {
         
            //PerfSig record test
@@ -197,15 +197,15 @@ stages {
     		//{
     	      // Test scenario
     	      //NeoLoad Test 
-    		 neoloadRun executable: "${NL_CMD_PATH}", 
+    		 neoloadRun (executable: "${NL_CMD_PATH}", 
     		             project: "${NL_PROJECT}", 
     		             testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
     		             testDescription: 'From Jenkins', 
     		             commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
-    		             scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']   
+    		             scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate'])   
 			 //}      
             }
-         //)
+         )
 
         script {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
