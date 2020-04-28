@@ -72,7 +72,7 @@ stages {
 			step(		
 			
         //send json payload	
-		httpRequest acceptType: 'APPLICATION_JSON', 
+		def response = httpRequest acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 		contentType: 'APPLICATION_JSON', 
 		customHeaders: [[maskValue: true, name: 'Authorization', 
