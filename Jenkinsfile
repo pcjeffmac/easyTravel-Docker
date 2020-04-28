@@ -70,6 +70,7 @@ stages {
 					}"""
 				)
 			step(		
+		echo body	
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
