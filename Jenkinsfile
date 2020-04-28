@@ -181,9 +181,11 @@ stages {
   
    stage('Run NeoLoad - scenario1') {
        steps {
-        step(
+         step {
         	dir ('NeoLoad') {
-        		TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        	    
+        		env.TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        		
         		//PerfSig record test
     			recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     			{
@@ -195,9 +197,11 @@ stages {
     				commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
     				scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			 	} 
-			 	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()     
+			 	
+			 	env.TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
+			 	   
               }  
-           )
+           }
         }
     }
     
@@ -221,8 +225,8 @@ stages {
     					"Jenkins Build Number": "${BUILD_ID}",
     					"Environment": "Production"
   						},
-  						"start": ${TEST_START},
-  						"end": ${TEST_END} 
+  						"start": ${env.TEST_START},
+  						"end": ${env.TEST_END} 
 					}"""
         	}
         	//send json payload	
