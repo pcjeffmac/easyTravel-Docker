@@ -182,25 +182,25 @@ stages {
    stage('Run NeoLoad - scenario1') {
        steps {
         step(
-        dir ('NeoLoad') {
-        TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        //PerfSig record test
-    		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
-    		{
-    	// Test scenario
-    	//NeoLoad Test 
-    		neoloadRun executable: "${NL_CMD_PATH}", 
-    		project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', 
-    		testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
-    		testDescription: 'From Jenkins', 
-    		commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
-    		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
-			}      
-        }
+        	dir ('NeoLoad') {
+        		TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        		//PerfSig record test
+    			recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
+    			{
+    			// Test scenario
+    			//NeoLoad Test 
+    			neoloadRun executable: "${NL_CMD_PATH}", 
+    			project: '/home/dynatrace/NeoLoadProjects/easytravelDocker/easytravelDocker.nlp', 
+    			testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
+    			testDescription: 'From Jenkins', 
+    			commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
+    			scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
+			 	}      
+              } 
+           )
         script {
         	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
-        )
         }
     }
     
