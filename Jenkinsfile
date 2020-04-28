@@ -268,9 +268,9 @@ stages {
 		)
 		step(
 		//Produce PerSig reports
-        perfSigDynatraceReports envId: 'DTSaaS', 
+        perfSigDynatraceReports (envId: 'DTSaaS', 
         nonFunctionalFailure: 2, 
-        specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json'
+        specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json')
         )
         step(
         // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
