@@ -193,17 +193,17 @@ stages {
             dir ('NeoLoad') {
         
            //PerfSig record test
-    		//recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
-    		//{
+    		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
+    		{
     	      // Test scenario
     	      //NeoLoad Test 
-    		 neoloadRun (executable: "${NL_CMD_PATH}", 
-    		             project: "${NL_PROJECT}", 
-    		             testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
-    		             testDescription: 'From Jenkins', 
-    		             commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
-    		             scenario: 'scenario1')   
-			 //}      
+    		 //neoloadRun (executable: "${NL_CMD_PATH}", 
+    		 //            project: "${NL_PROJECT}", 
+    		 //            testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
+    		 //            testDescription: 'From Jenkins', 
+    		 //            commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
+    		 //            scenario: 'scenario1')   
+			 }      
             }
          )
 
