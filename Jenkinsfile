@@ -71,7 +71,7 @@ stages {
 				}	
 		echo "${jsonPayload}"			
 
-        step(
+        
         	//send json payload	
 			httpRequest (acceptType: 'APPLICATION_JSON', 
 			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -82,8 +82,9 @@ stages {
 			ignoreSslErrors: true, 
 			requestBody: jsonPayload, 
 			responseHandle: 'NONE', 
-			url: "${DT_TENANT_URL}/api/v1/events/")        		
-		)
+			url: "${DT_TENANT_URL}/api/v1/events/",
+			validResponseCodes: '200')        		
+		
 		}
     }    
 
