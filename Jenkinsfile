@@ -183,9 +183,9 @@ stages {
        steps {
          step {
         	dir ('NeoLoad') {
-        	    
+        	    script {
         		env.TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        		
+        		}
         		//PerfSig record test
     			recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     			{
@@ -197,9 +197,9 @@ stages {
     				commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
     				scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			 	} 
-			 	
+			 	script {
 			 	env.TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
-			 	   
+			 	}   
               }  
            }
         }
