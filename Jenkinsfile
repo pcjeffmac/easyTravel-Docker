@@ -181,10 +181,10 @@ stages {
   
    stage('Run NeoLoad - scenario1') {
        steps {
+       
            step { 
-              script {
-        		TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        	  }
+            	TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        	
         	        	  
      	  
         	    dir ('NeoLoad') {
@@ -202,9 +202,8 @@ stages {
                 }
                 }
 
-              script {
 			  	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
-			  }   
+  
 
         }
     }
