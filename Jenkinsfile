@@ -199,10 +199,11 @@ stages {
     		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
         }
+        )
         script {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
-        )
+        
         }
     }
     
