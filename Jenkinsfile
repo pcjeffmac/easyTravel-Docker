@@ -181,12 +181,12 @@ stages {
   
    stage('Run NeoLoad - scenario1') {
        steps {
-
+           step { 
               script {
-        		TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        		env.TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         	  }
         	        	  
-      	  
+     	  
         	    dir ('NeoLoad') {
          		//PerfSig record test
     			recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
@@ -200,13 +200,13 @@ stages {
     				scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			 	}  
                 }
-                
+                }
 
               script {
-			  	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
+			  	env.TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
 			  }   
-       }
 
+        }
     }
     
    stage('Annotation-Post') {
@@ -229,8 +229,8 @@ stages {
     					"Jenkins Build Number": "${BUILD_ID}",
     					"Environment": "Production"
   						},
-  						"start": ${TEST_START},
-  						"end": ${TEST_END} 
+  						"start": ${env.TEST_START},
+  						"end": ${env.TEST_END} 
 					}"""
         	}
         	//send json payload	
