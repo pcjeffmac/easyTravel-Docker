@@ -94,7 +94,7 @@ stages {
 
     stage('Event-Post-Service-JourneyService') {
         steps {
-            step {
+            step(
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -116,10 +116,10 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
-				}
-			step {		
+				)
+			step(		
         //send json payload	
-		httpRequest acceptType: 'APPLICATION_JSON', 
+		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 		contentType: 'APPLICATION_JSON', 
 		customHeaders: [[maskValue: true, name: 'Authorization', 
@@ -129,13 +129,14 @@ stages {
 		requestBody: body, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/" 
-		  }
+		)
+		)
 		}        		
     } 
     
     stage('Event-Post-Service-Nginx') {
         steps {
-            step {
+            step(
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -157,10 +158,10 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
-			}
-			step {		
+			)
+			step(		
         //send json payload	
-		httpRequest acceptType: 'APPLICATION_JSON', 
+		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 		contentType: 'APPLICATION_JSON', 
 		customHeaders: [[maskValue: true, name: 'Authorization', 
@@ -170,7 +171,8 @@ stages {
 		requestBody: body, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"  
-		}
+		)
+		)
 		}      		
     }    
 
@@ -179,7 +181,7 @@ stages {
         steps {
     	sh 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www'
     	sh 'export DWWW=`docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www`'	
-		step {
+		step(
 		DWWW = sh (
 			script: 'docker inspect --format \'{{ .NetworkSettings.IPAddress }}\' www',
 			returnStdout: true
@@ -188,13 +190,13 @@ stages {
     		sh "sudo iptables -t nat -A POSTROUTING --source ${DWWW} --destination ${DWWW} -p tcp --dport 80 -j MASQUERADE"
 			sh "sudo iptables -t nat -A DOCKER ! -i docker0 --source 0.0.0.0/0 --destination 0.0.0.0/0 -p tcp --dport 80  -j DNAT --to ${DWWW}"
 			sh "sudo iptables -A DOCKER ! -i docker0 -o docker0 --source 0.0.0.0/0 --destination ${DWWW} -p tcp --dport 80 -j ACCEPT"
-		}	
+		)	
 		}
     }  
   
    stage('Run NeoLoad - scenario1') {
        steps {
-        step {
+        step(
         dir ('NeoLoad') {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         //PerfSig record test
@@ -210,16 +212,16 @@ stages {
     		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
         }
-        }
-        step {
+        )
+        step(
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        }
+        )
         }
     }
     
    stage('Annotation-Post') {
        steps {
-       		step {
+       		step(
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_ANNOTATION",
   					"attachRules": {
@@ -238,10 +240,10 @@ stages {
   						"start": ${TEST_START},
   						"end": ${TEST_END} 
 					}"""
-        	}
-        	step {
+        	)
+        	step(
         //send json payload	
-		httpRequest acceptType: 'APPLICATION_JSON', 
+		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 		contentType: 'APPLICATION_JSON', 
 		customHeaders: [[maskValue: true, name: 'Authorization', 
@@ -251,25 +253,26 @@ stages {
 		requestBody: body, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"  
-		  }
+		)
+		)
 		}      		
     }      
     
     stage('ValidateProduction') {
        steps {
-        step {
+        step(
         dir ('dynatrace-scripts') {
             DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
             echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
         }
-		}
-		step {
+		)
+		step(
 		//Produce PerSig reports
         perfSigDynatraceReports envId: 'DTSaaS', 
         nonFunctionalFailure: 2, 
         specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json'
-        }
-        step {
+        )
+        step(
         // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
         dir ('dynatrace-cli') {
             sh 'python3 dtcli.py dqlr srv tags/CONTEXTLESS:easyTravelDocker=www '+
@@ -281,7 +284,7 @@ stages {
             	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
         }
-        }
+        )
         }
     }     
 }
