@@ -68,7 +68,7 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""		
-			echo ${jsonPayload}
+			echo "${jsonPayload}"
 			sh 'printenv'
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
