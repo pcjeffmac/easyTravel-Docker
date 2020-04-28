@@ -195,6 +195,7 @@ stages {
            //PerfSig record test
     		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     		{
+    		  sh 'sleep 300'
     	      // Test scenario
     	      //NeoLoad Test 
     		 //neoloadRun (executable: "${NL_CMD_PATH}", 
