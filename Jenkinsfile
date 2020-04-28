@@ -198,9 +198,11 @@ stages {
 			 	}      
               } 
            )
-        script {
-        	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        }
+         step(  
+        	script {
+        		TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        	}
+          )	
         }
     }
     
