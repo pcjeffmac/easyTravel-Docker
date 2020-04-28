@@ -3,11 +3,6 @@ node {
         ET_APM_SERVER_DEFAULT = "APM"
     }
 
-	//send notification to slack
-	stage('Event-Start-Slack') {
-	 	slackSend color: "#439FE0", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-	} 
-
  	stage('cleanup') {
  		deleteDir()
  	}
@@ -235,10 +230,20 @@ node {
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
         }
     }     
+
+
+post {
+    	success {
+      		slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    	}
     
-    stage('Event-Slack-End') {
-		slackSend color: "#439FE0", message: "Build Finished: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-	} 
-          
-    
+    	unstable {
+      		slackSend (color: '#FFFF00', message: "UNSTABLE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    	}
+
+    	failure {
+      		slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    	}
+    }
+
 }    
