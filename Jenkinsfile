@@ -190,21 +190,21 @@ stages {
         }
 
          //step(
-          // dir ('NeoLoad') {
+            dir ('NeoLoad') {
         
            //PerfSig record test
     		//recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     		//{
     	      // Test scenario
     	      //NeoLoad Test 
-    		  //neoloadRun executable: "${NL_CMD_PATH}", 
-    		  //project: "${NL_PROJECT}", 
-    		  //testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
-    		  //testDescription: 'From Jenkins', 
-    		  //commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
-    		  //scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
-			//}      
-           //}
+    		 neoloadRun (executable: "${NL_CMD_PATH}", 
+    		             project: "${NL_PROJECT}", 
+    		             testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
+    		             testDescription: 'From Jenkins', 
+    		             commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
+    		             scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate'])    
+			 //}      
+            }
          //)
 
         script {
@@ -256,29 +256,29 @@ stages {
     stage('ValidateProduction') {
        steps {
         script {
-        dir ('dynatrace-scripts') {
-            DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
-            echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
-        }
+          dir ('dynatrace-scripts') {
+              DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
+              echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
+          }
         }
 
-		//Produce PerSig reports
-        perfSigDynatraceReports (envId: 'DTSaaS', 
-        nonFunctionalFailure: 2, 
-        specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json')
+		  //Produce PerSig reports
+          perfSigDynatraceReports (envId: 'DTSaaS', 
+          nonFunctionalFailure: 2, 
+          specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json')
         
 
-        // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
-        dir ('dynatrace-cli') {
-            sh 'python3 dtcli.py dqlr srv tags/CONTEXTLESS:easyTravelDocker=www '+
-               'service.responsetime[avg%hour],service.responsetime[p90%hour] ${DT_URL} ${DT_TOKEN}'
-            sh 'mv dqlreport.html dqlproductionreport.html'
-            archiveArtifacts artifacts: 'dqlproductionreport.html', fingerprint: true
+          // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
+          dir ('dynatrace-cli') {
+              sh 'python3 dtcli.py dqlr srv tags/CONTEXTLESS:easyTravelDocker=www '+
+                'service.responsetime[avg%hour],service.responsetime[p90%hour] ${DT_URL} ${DT_TOKEN}'
+              sh 'mv dqlreport.html dqlproductionreport.html'
+             archiveArtifacts artifacts: 'dqlproductionreport.html', fingerprint: true
 
-            sh 'python3 dtcli.py link srv tags/CONTEXTLESS:easyTravelDocker=www ' +
-            	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
-            archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
-        }
+              sh 'python3 dtcli.py link srv tags/CONTEXTLESS:easyTravelDocker=www ' +
+             	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
+              archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
+          }
         
         }
     }     
