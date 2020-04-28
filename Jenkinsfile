@@ -1,4 +1,5 @@
 pipeline {
+agent any
     environment {
         ET_APM_SERVER_DEFAULT = "APM"
     }
@@ -33,13 +34,6 @@ stages {
     	step([$class: 'DockerComposeBuilder', dockerComposeFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: true])
     	}
     } 
- 
-  	stage('cleanup') {
-  	    steps {
- 		//deleteDir()
- 		//checkout scm
- 		}
- 	}
    
    stage('docker-compose-up') {
         steps {
