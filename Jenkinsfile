@@ -49,8 +49,8 @@ stages {
    		steps {
    
         	//Dynatrace POST action for deployment Event  
-        	script{     	
-        	def jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
+        	script {     	
+        	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
         			"meTypes" : "HOST",
@@ -71,7 +71,7 @@ stages {
   						}
 					}"""
 				}	
-		println jsonPayload			
+		echo "${jsonPayload}			
 
             step(
         //send json payload	
