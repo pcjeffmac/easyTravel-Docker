@@ -183,7 +183,7 @@ stages {
        steps {
            step { 
               script {
-        		env.TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        		TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         	  }
         	        	  
      	  
@@ -203,7 +203,7 @@ stages {
                 }
 
               script {
-			  	env.TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
+			  	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()  
 			  }   
 
         }
@@ -229,8 +229,8 @@ stages {
     					"Jenkins Build Number": "${BUILD_ID}",
     					"Environment": "Production"
   						},
-  						"start": ${env.TEST_START},
-  						"end": ${env.TEST_END} 
+  						"start": ${TEST_START},
+  						"end": ${TEST_END} 
 					}"""
         	}
         	//send json payload	
