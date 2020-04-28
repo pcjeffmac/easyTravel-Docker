@@ -209,8 +209,10 @@ echo "${TEST_START}"
            }
           )
 
+        environment {
         script {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        }
         }
         
         echo "${TEST_START}"	
