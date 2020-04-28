@@ -52,7 +52,7 @@ stages {
     
    stage('Event-Post-Host') {
         steps {
-            step {
+            step(
         	//Dynatrace POST action for deployment Event      	
         	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -74,8 +74,8 @@ stages {
     					"Build URL": "${BUILD_URL}"
   						}
 					}"""
-				}
-			step {		
+				)
+			step (		
         //send json payload	
 		httpRequest acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -87,7 +87,7 @@ stages {
 		requestBody: body, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"        		
-		}
+		)
 		}
     }    
 
