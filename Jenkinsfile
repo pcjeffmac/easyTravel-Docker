@@ -182,7 +182,9 @@ stages {
    stage('Run NeoLoad - scenario1') {
        steps {
         dir ('NeoLoad') {
+        script {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        }
         //PerfSig record test
     		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     		{
@@ -196,7 +198,9 @@ stages {
     		scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
         }
+        script {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        }
         }
     }
     
