@@ -189,6 +189,8 @@ stages {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
 
+echo "${TEST_START}"
+
          step(
            dir ('NeoLoad') {
         
