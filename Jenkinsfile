@@ -3,6 +3,7 @@ pipeline {
         ET_APM_SERVER_DEFAULT = "APM"
     }
 
+stages {
  	stage('cleanup') {
  		deleteDir()
  	}
@@ -230,7 +231,7 @@ pipeline {
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
         }
     }     
-
+}
 
 post {
     	success {
