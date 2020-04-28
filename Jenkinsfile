@@ -202,6 +202,8 @@ stages {
     }
     
    stage('Annotation-Post') {
+        echo "${TEST_START}"	
+        echo "${TEST_END}"	
        steps {
        		script {
         	//Dynatrace POST action for deployment Event      	
