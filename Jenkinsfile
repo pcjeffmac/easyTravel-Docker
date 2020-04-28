@@ -1,4 +1,4 @@
-node {
+pipeline {
     environment {
         ET_APM_SERVER_DEFAULT = "APM"
     }
