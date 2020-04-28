@@ -48,7 +48,7 @@ stages {
         steps {
             step(
         	//Dynatrace POST action for deployment Event      	
-        	def body = """{"eventType": "CUSTOM_DEPLOYMENT",
+        	def json = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
         			"meTypes" : "HOST",
@@ -70,7 +70,7 @@ stages {
 					}"""
 				)
 			step(		
-		echo body	
+			
         //send json payload	
 		httpRequest (acceptType: 'APPLICATION_JSON', 
 		authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
@@ -79,7 +79,7 @@ stages {
 		value: "Api-Token ${DT_API_TOKEN}"]], 
 		httpMode: 'POST', 
 		ignoreSslErrors: true, 
-		requestBody: body, 
+		requestBody: json, 
 		responseHandle: 'NONE', 
 		url: "${DT_TENANT_URL}/api/v1/events/"        		
 		)
