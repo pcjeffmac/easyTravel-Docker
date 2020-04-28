@@ -189,8 +189,6 @@ stages {
         TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
 
-echo "${TEST_START}"
-
          //step(
           // dir ('NeoLoad') {
         
@@ -211,11 +209,8 @@ echo "${TEST_START}"
 
         script {
         TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
-        }
-    
-        echo "${TEST_START}"	
-        echo "${TEST_END}"	
-        
+        } 
+       
         }
     }
     
@@ -260,19 +255,18 @@ echo "${TEST_START}"
     
     stage('ValidateProduction') {
        steps {
-        step(
+
         dir ('dynatrace-scripts') {
             DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
             echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
         }
-		)
-		step(
+
 		//Produce PerSig reports
         perfSigDynatraceReports (envId: 'DTSaaS', 
         nonFunctionalFailure: 2, 
         specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json')
-        )
-        step(
+        
+
         // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
         dir ('dynatrace-cli') {
             sh 'python3 dtcli.py dqlr srv tags/CONTEXTLESS:easyTravelDocker=www '+
@@ -284,7 +278,7 @@ echo "${TEST_START}"
             	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
             archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
         }
-        )
+        
         }
     }     
 }
