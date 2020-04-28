@@ -192,7 +192,7 @@ stages {
 echo "${TEST_START}"
 
          //step(
-           //dir ('NeoLoad') {
+           dir ('NeoLoad') {
         
            //PerfSig record test
     		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
@@ -206,7 +206,7 @@ echo "${TEST_START}"
     		  commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
     		  scenario: 'scenario1', trendGraphs: ['AvgResponseTime', 'ErrorRate']     
 			}      
-           //}
+           }
           //)
 
         script {
