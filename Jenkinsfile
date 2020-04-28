@@ -202,9 +202,9 @@ stages {
     }
     
    stage('Annotation-Post') {
-        echo "${TEST_START}"	
-        echo "${TEST_END}"	
        steps {
+        echo "${TEST_START}"	
+        echo "${TEST_END}"	       
        		script {
         	//Dynatrace POST action for deployment Event      	
         	jsonPayload = """{"eventType": "CUSTOM_ANNOTATION",
