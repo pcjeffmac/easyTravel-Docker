@@ -20,11 +20,9 @@ stages {
 		}
 	}
 
-    stage('Checkout-cli') {
+    stage('Git') {
         steps {
-        // Checkout our application source code
             git url: 'https://github.com/pcjeffmac/easyTravel-Docker.git', credentialsId: "${GIT_TOKEN}", branch: 'master'
-        // into a dynatrace-cli subdirectory we checkout the CLI
         dir ('dynatrace-cli') {
             git url: 'https://github.com/Dynatrace/dynatrace-cli.git', credentialsId: "${GIT_CLI_TOKEN}", branch: 'master'
         }
@@ -38,7 +36,7 @@ stages {
     	}
     } 
    
-   stage('docker-compose-up') {
+   stage('docker-up') {
         steps {
     	dir ('deploy-easytravel') {
     		sh 'cd /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/'
@@ -49,7 +47,6 @@ stages {
     
    stage('Event-Post-Host') {
    		steps {
-        	//Dynatrace POST action for deployment Event  
         	script {     	
         	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
@@ -73,7 +70,6 @@ stages {
 					}"""
 				}	
 		    //echo "${jsonPayload}"			
-        	//send json payload	
 			httpRequest (acceptType: 'APPLICATION_JSON', 
 			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 			contentType: 'APPLICATION_JSON', 
@@ -90,8 +86,7 @@ stages {
 
     stage('Event-Post-Service-JourneyService') {
         steps {
-            script {
-        	//Dynatrace POST action for deployment Event      	
+            script {  	
         	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
@@ -113,7 +108,6 @@ stages {
   						}
 					}"""
 				}		
-        	//send json payload	
 			httpRequest (acceptType: 'APPLICATION_JSON', 
 			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 			contentType: 'APPLICATION_JSON', 
@@ -130,8 +124,7 @@ stages {
     
     stage('Event-Post-Service-Nginx') {
         steps {
-            script {
-        	//Dynatrace POST action for deployment Event      	
+            script {      	
         	jsonPayload = """{"eventType": "CUSTOM_DEPLOYMENT",
   					"attachRules": {
     				"tagRule" : {
@@ -153,7 +146,6 @@ stages {
   						}
 					}"""
 			}
-        	//send json payload	
 			httpRequest (acceptType: 'APPLICATION_JSON', 
 			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 			contentType: 'APPLICATION_JSON', 
@@ -184,44 +176,34 @@ stages {
   
    stage('Run NeoLoad - scenario1') {
        steps {
-
         script {
-        TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        	TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
-
          script{
-         	dir ('NeoLoad') {
-        
-           //PerfSig record test
+           dir ('NeoLoad') {
     		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     		{
-    		  //sh 'sleep 300'
-    	      // Test scenario
-    	      //NeoLoad Test 
-    		 neoloadRun (executable: "${NL_CMD_PATH}", 
+     		 neoloadRun (executable: "${NL_CMD_PATH}", 
     	            project: "${NL_PROJECT}", 
     	            testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
     	            testDescription: 'From Jenkins',
     	            autoArchive: "true", 
     	            commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
     	            scenario: 'scenario1')   
-			 }      
-         	}
+			}      
            }
-
+          }
         script {
-        TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
+        	TEST_END = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         } 
-       
-        }
+       }
     }
     
    stage('Annotation-Post') {
        steps {
         echo "StartTime: ${TEST_START}"	
         echo "EndTime: ${TEST_END}"	       
-       		script {
-        	//Dynatrace POST action for deployment Event      	
+       		script {      	
         	jsonPayload = """{"eventType": "CUSTOM_ANNOTATION",
   					"attachRules": {
     				"tagRule" : {
@@ -239,8 +221,7 @@ stages {
   						"start": ${TEST_START},
   						"end": ${TEST_END} 
 					}"""
-        	}
-        	//send json payload	
+        	}	
 			httpRequest (acceptType: 'APPLICATION_JSON', 
 			authentication: 'a47386bc-8488-41c0-a806-07b1123560e3', 
 			contentType: 'APPLICATION_JSON', 
@@ -261,27 +242,21 @@ stages {
           dir ('dynatrace-scripts') {
               DYNATRACE_PROBLEM_COUNT = sh (script: './checkforproblems.sh', returnStatus : true)
               echo "Dynatrace Problems Found: ${DYNATRACE_PROBLEM_COUNT}"
+            }
           }
-        }
-
-		  //Produce PerSig reports
           perfSigDynatraceReports (envId: 'DTSaaS', 
           nonFunctionalFailure: 2, 
           specFile: '/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/monspec/monspec.json')
-        
 
-          // now lets generate a report using our CLI and lets generate some direct links back to dynatrace
           dir ('dynatrace-cli') {
               sh 'python3 dtcli.py dqlr srv tags/CONTEXTLESS:easyTravelDocker=www '+
                 'service.responsetime[avg%hour],service.responsetime[p90%hour] ${DT_URL} ${DT_TOKEN}'
               sh 'mv dqlreport.html dqlproductionreport.html'
              archiveArtifacts artifacts: 'dqlproductionreport.html', fingerprint: true
-
               sh 'python3 dtcli.py link srv tags/CONTEXTLESS:easyTravelDocker=www ' +
              	' overview 60:0 ${DT_URL} ${DT_TOKEN} > dtprodlinks.txt'
               archiveArtifacts artifacts: 'dtprodlinks.txt', fingerprint: true
           }
-        
         }
     }     
 }
