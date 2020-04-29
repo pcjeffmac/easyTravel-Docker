@@ -198,12 +198,12 @@ stages {
     		  //sh 'sleep 300'
     	      // Test scenario
     	      //NeoLoad Test 
-    		 //neoloadRun (executable: "${NL_CMD_PATH}", 
-    		 //            project: "${NL_PROJECT}", 
-    		 //            testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
-    		 //            testDescription: 'From Jenkins', 
-    		 //            commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
-    		 //            scenario: 'scenario1')   
+    	neoloadRun (executable: "${NL_CMD_PATH}", 
+    	            project: "${NL_PROJECT}", 
+    	            testName: 'scenerio1' + '$Date{hh:mm - dd MMM yyyy}' + "(build ${BUILD_NUMBER})", 
+    	            testDescription: 'From Jenkins', 
+    	            commandLineOption: "-nlweb -nlwebAPIURL ${NL_WEB_URL} -nlwebToken ${NL_WEB_TOKEN} -noGUI", 
+    	            scenario: 'scenario1')   
 			 //}      
          //   }
          //)
@@ -217,8 +217,8 @@ stages {
     
    stage('Annotation-Post') {
        steps {
-        echo "${TEST_START}"	
-        echo "${TEST_END}"	       
+        echo "StartTime: ${TEST_START}"	
+        echo "EndTime: ${TEST_END}"	       
        		script {
         	//Dynatrace POST action for deployment Event      	
         	jsonPayload = """{"eventType": "CUSTOM_ANNOTATION",
