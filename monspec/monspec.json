@@ -6,7 +6,7 @@
             "timeseriesId" : "com.dynatrace.builtin:service.responsetime",
             "aggregation" : "percentile",
             "tags" : "easyTravelDocker:www",
-            "upperLimit" : 3000000.0,
+            "upperLimit" : 6000000.0,
             "lowerLimit" : 5.0
         },
         {
