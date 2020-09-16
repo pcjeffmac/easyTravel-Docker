@@ -177,6 +177,9 @@ stages {
    stage('Run NeoLoad - scenario1') {
        steps {
         script {
+        	sh "mkdir /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/NeoLoad"
+        }
+        script {
         	TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
          script{
