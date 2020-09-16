@@ -177,13 +177,10 @@ stages {
    stage('Run NeoLoad - scenario1') {
        steps {
         script {
-        	sh "mkdir /var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/NeoLoad"
-        }
-        script {
         	TEST_START = sh(script: 'echo "$(date -u +%s)000"', returnStdout: true).trim()
         }
          script{
-           dir ('NeoLoad') {
+           dir ('/var/lib/jenkins/jobs/easyTravelDockerPipeline/workspace/NeoLoad') {
     		recordDynatraceSession(entityIds: [[$class: 'Service', entityId: 'SERVICE-2A07FD2D00BA8372']], envId: 'DTSaaS', testCase: 'loadtest')
     		{
      		 neoloadRun (executable: "${NL_CMD_PATH}", 
